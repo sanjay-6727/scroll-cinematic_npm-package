@@ -9,6 +9,9 @@
 [![zero deps](https://img.shields.io/badge/dependencies-0-brightgreen)](./package.json)
 [![TypeScript](https://img.shields.io/badge/TypeScript-ready-blue)](./src)
 
+**[→ Live Demo](https://scroll-cinematic-demo.vercel.app)** &nbsp;·&nbsp; [npm](https://npmjs.com/package/scroll-cinematic) &nbsp;·&nbsp; [Examples](#-real-world-use-cases)
+
+
 You've seen it on Apple product pages. On Stripe. On those insane award-winning portfolios — a video that plays as you scroll. Not actually a video. A canvas, rendering a sequence of pre-extracted frames, GPU-accelerated, frame-perfect, synced to your scroll position to the pixel.
 
 `scroll-cinematic` does this in one component.
