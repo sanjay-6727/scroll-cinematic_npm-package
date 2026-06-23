@@ -1,0 +1,40 @@
+{
+  "name": "scroll-cinematic",
+  "version": "1.0.1",
+  "description": "Scroll-driven cinematic frame sequence animations for React and Next.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "dev": "tsup src/index.ts --watch"
+  },
+  "keywords": [
+  "scroll-animation",
+  "scroll-driven",
+  "react-canvas",
+  "image-sequence",
+  "cinematic-scroll",
+  "nextjs-animation",
+  "apple-scroll",
+  "framer-motion",
+  "canvas-animation",
+  "react-animation"
+],
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3"
+  }
+}
