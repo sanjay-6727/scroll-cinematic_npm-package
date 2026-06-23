@@ -1,52 +1,38 @@
-<div align="center">
+# scroll-cinematic
 
-╔═══════════════════════════════════════════════════════════════╗║                                                               ║║       ░██████╗░█████╗░██████╗░░█████╗░██╗░░░░░██╗             ║║       ██╔════╝██╔══██╗██╔══██╗██╔══██╗██║░░░░░██║             ║║       ╚█████╗░██║░░╚═╝██████╔╝██║░░██║██║░░░░░██║             ║║       ░╚═══██╗██║░░██╗██╔══██╗██║░░██║██║░░░░░██║             ║║       ██████╔╝╚█████╔╝██║░░██║╚█████╔╝███████╗███████╗        ║║       ╚═════╝░░╚════╝░╚═╝░░╚═╝░╚════╝░╚══════╝╚══════╝        ║║                                                               ║║          ─── C I N E M A T I C   S C R O L L ───              ║║                                                               ║╚═══════════════════════════════════════════════════════════════╝
-### Scroll-driven frame sequence animations for React & Next.js.
-*One scroll. 169 frames. Zero compromise.*
+> Scroll-driven frame sequence animation for React & Next.js.  
+> One scroll. 169 frames. Zero compromise.
 
-<br/>
+[![npm version](https://img.shields.io/npm/v/scroll-cinematic)](https://www.npmjs.com/package/scroll-cinematic)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/scroll-cinematic)](https://bundlephobia.com/package/scroll-cinematic)
+[![license](https://img.shields.io/npm/l/scroll-cinematic)](./LICENSE)
+[![zero deps](https://img.shields.io/badge/dependencies-0-brightgreen)](./package.json)
+[![TypeScript](https://img.shields.io/badge/TypeScript-ready-blue)](./src)
 
-[![npm version](https://img.shields.io/npm/v/scroll-cinematic?style=flat-square&color=black&labelColor=white&label=npm)](https://npmjs.com/package/scroll-cinematic)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/scroll-cinematic?style=flat-square&color=black&labelColor=white&label=size)](https://bundlephobia.com/package/scroll-cinematic)
-[![license](https://img.shields.io/npm/l/scroll-cinematic?style=flat-square&color=black&labelColor=white)](./LICENSE)
-[![zero deps](https://img.shields.io/badge/dependencies-zero-black?style=flat-square&labelColor=white)](./package.json)
-[![TypeScript](https://img.shields.io/badge/TypeScript-ready-black?style=flat-square&labelColor=white)](./src)
-[![SSR Safe](https://img.shields.io/badge/SSR--safe-ready-black?style=flat-square&labelColor=white)](./src)
+You've seen it on Apple product pages. On Stripe. On those insane award-winning portfolios — a video that plays as you scroll. Not actually a video. A canvas, rendering a sequence of pre-extracted frames, GPU-accelerated, frame-perfect, synced to your scroll position to the pixel.
 
-<br/>
-
-**[Live Demo](https://scroll-cinematic-demo.vercel.app)** · **[npm Package](https://npmjs.com/package/scroll-cinematic)** · **[Real-World Examples](#-real-world-use-cases)**
-
-</div>
+`scroll-cinematic` does this in one component.
 
 ---
 
-## ◈ What Is This?
+## Why Not Just Use `<video>`?
 
-You've seen it on Apple product launches, Stripe landing pages, and award-winning portfolios: **high-fidelity video sequences that play perfectly in sync with your scrollbar.** Achieving this smoothly using standard HTML5 `<video>` elements is notoriously unreliable due to browser buffering constraints and non-deterministic frame-seeking.
+`<video currentTime = scrollY>` desynchs at unpredictable intervals because video decoding is not frame-addressable in the browser. Canvas `drawImage` with preloaded `Image` objects is. That's the whole insight.
 
-`scroll-cinematic` solves this by orchestrating a high-performance HTML5 2D Canvas pipeline. It preloads pre-extracted video frames directly into memory, rendering them with GPU acceleration frame-by-frame as the user scrolls.
-
-USER SCROLLS DOWN│▼┌──────────────────────────────────────────┐│  scrollY  ──►  progress (0 → 1)          ││  progress ──►  frameIndex (0 → N)        ││  frameIndex ──► canvas.drawImage(frame)  ││                                          ││       ▲ GPU-Accelerated 2D Canvas        │└──────────────────────────────────────────┘│▼60fps. Smooth. Cinematic.
----
-
-## ◈ Why Not Just Use `<video>`?
-
-Video decoding in modern browsers is optimized for linear playback, not random-access scrubbing. Forcing `<video currentTime={scrollY}>` leads to stuttering, visual desynchronization, and high CPU usage. 
-
-| Feature | `scroll-cinematic` | `<video>` Scrubbing | GSAP ScrollTrigger |
-| :--- | :---: | :---: | :---: |
-| **Frame-Perfect Scroll Sync** | ✅ | ❌ | ⚠️ *Complex Setup* |
-| **Instant Reverse Playback** | ✅ | ❌ | ✅ |
-| **Deterministic Rendering** | ✅ | ❌ | ✅ |
-| **React-Native Server Safe** | ✅ | ❌ | ⚠️ *Client Guard Needed* |
-| **Zero Dependencies** | ✅ | ✅ | ❌ *Tethered to Core Library* |
-| **Built-in Overlay Blocks** | ✅ | ❌ | ❌ |
-| **Single Drop-in Component** | ✅ | ❌ | ❌ |
+|  | scroll-cinematic | `<video>` scrubbing | GSAP setup |
+|---|:---:|:---:|:---:|
+| Frame-perfect scroll sync | ✅ | ❌ | ⚠️ |
+| Instant reverse playback | ✅ | ❌ | ✅ |
+| Deterministic rendering | ✅ | ❌ | ✅ |
+| React-native | ✅ | ❌ | ⚠️ |
+| SSR safe | ✅ | ⚠️ | ⚠️ |
+| Zero dependencies | ✅ | ✅ | ❌ |
+| Overlay composition | ✅ | ❌ | ❌ |
+| One component | ✅ | ❌ | ❌ |
 
 ---
 
-## ◈ Installation
+## Install
 
 ```bash
 npm install scroll-cinematic
@@ -54,12 +40,21 @@ npm install scroll-cinematic
 yarn add scroll-cinematic
 # or
 pnpm add scroll-cinematic
-Requirements: React ≥ 18. No external layout systems, animation frameworks, or heavy bundle baggage required.◈ Quick Start (30 Seconds)TypeScriptimport { ScrollSequence } from "scroll-cinematic";
+```
+
+**Peer dependency:** React ≥ 18. That's it. No GSAP. No three.js. No baggage.
+
+---
+
+## Quick Start
+
+```tsx
+import { ScrollSequence } from "scroll-cinematic";
 
 export default function Hero() {
   return (
     <ScrollSequence
-      frames="/frames/frame_%04d.webp"  // Maps to frame_0001.webp, frame_0002.webp, etc.
+      frames="/frames/frame_%04d.webp"  // → frame_0001.webp, frame_0002.webp ...
       frameCount={169}
       height="300vh"
       title="Something Worth Watching"
@@ -70,47 +65,115 @@ export default function Hero() {
           show: 0.1,
           hide: 0.35,
           title: "01 — The Beginning",
-          text: "Every frame is a deliberate architectural decision.",
-          author: "Sanjay",
-          source: "PROD SYSTEM — 2026",
+          text: "Every frame is a decision.",
+          author: "You",
+          source: "YOUR SITE — 2026",
         },
       ]}
     />
   );
 }
-◈ Architecture Blueprint scroll-cinematic/
- │
- ├─ <ScrollSequence />       ← Drop-in component containing pre-styled UI layers.
- │   │
- │   ├─ useScrollFrames()    ← Core functional lifecycle engine.
- │   │   │
- │   │   ├─ Preloader        ← Asynchronously fetches N frames into memory array layout.
- │   │   ├─ IntersectionObs  ← Spawns/kills RequestAnimationFrame (RAF) based on visibility.
- │   │   ├─ ScrollTracker    ← Normalizes viewport coordinates to progress delta (0-1).
- │   │   └─ Canvas Renderer  ← Computes static cover-fit aspect configurations.
- │   │
- │   └─ Overlay Layer        ← Manages timed transitions for title text and custom dialogue assets.
- │
- └─ useScrollFrames()        ← Headless hook exposed for custom composition pipelines.
-◈ API Reference<ScrollSequence />Required PropsPropTypeDescriptionframesstring | ((i: number) => string)Path template supporting standard format specifiers (%d, %03d, %04d) or a dynamic factory function.frameCountnumberTotal discrete frame items within the target assets directory.Layout & Scroll AdjustmentsPropTypeDefaultDescriptionheightstring"300vh"Total scroll track depth. Higher values lower perceived playback speeds.stickyCanvasbooleantrueWhen true, scopes canvas relative to viewport bounds during scroll container focus.mobileZoomnumber1.3Aspect ratio scaling transform applied on viewports ≤ 768px wide.Cinematic Typography & OverlaysPropTypeDefaultDescriptiontitlestringundefinedHero section primary heading text.subtitlestringundefinedSubheading text displayed immediately below the primary header.eyebrowstringundefinedMonospace system context text presented above the title layer.textFadeEndnumber0.08Scroll progress delta percentage (0–1) where the primary hero text completely opacity-fades.dialoguesDialogue[][]Array of sequenced conversational text panels tracked against scroll progress.Performance & Utility ClassesPropTypeDefaultDescriptionshowLoadingProgressbooleantrueRenders a top-oriented loading progress bar while pre-fetching frames.loadingTextstring"Loading frames..."Status text presented during asset initialization.showProgressBarbooleantrueDisplays a minimal scroll completion bar at the footer level.onProgress(p: number, idx: number) => voidundefinedLifecycle callback executed on every frame paint transition step.Dialogue Type SchemaTypeScripttype Dialogue = {
-  id: string;        // Unique node primitive key
-  show: number;      // Scroll threshold marker (0–1) to trigger transition-in
-  hide: number;      // Scroll threshold marker (0–1) to trigger transition-out
-  title?: string;    // Bold descriptive section header
-  text: string;      // Body narrative content block
-  author?: string;   // Optional author citation signature line
-  source?: string;   // Complementary reference identifier rendered in monospace formatting
-};
-Headless Hook implementation: useScrollFrames()For custom layouts, complex state tracking, or unique UI layering, drop the component and consume the headless core directly:TypeScriptimport { useScrollFrames } from "scroll-cinematic";
+```
 
-function CustomSequenceLayout() {
+That's a full cinematic scroll section — sticky canvas, frame preloader, progress bar, overlay text — all from one component.
+
+---
+
+## How It Works
+
+```
+USER SCROLLS DOWN
+       │
+       ▼
+  scrollY  ──►  progress (0→1)
+  progress ──►  frameIndex (0→N)
+  frameIndex ──► canvas.drawImage(frame)
+                          ▲
+          GPU-accelerated 2D canvas
+       │
+       ▼
+  60fps. Smooth. Cinematic.
+```
+
+---
+
+## API
+
+### `<ScrollSequence />`
+
+#### Required
+
+| Prop | Type | Description |
+|---|---|---|
+| `frames` | `string \| (i: number) => string` | Frame path template. Supports `%d`, `%03d`, `%04d`. Or pass a function. |
+| `frameCount` | `number` | Total frames in your sequence. |
+
+#### Layout & Scroll
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `height` | `string` | `"300vh"` | Scroll container height. Longer = slower playback. |
+| `stickyCanvas` | `boolean` | `true` | Sticky-in-container vs. `position: fixed`. |
+| `mobileZoom` | `number` | `1.3` | Scale multiplier on screens ≤ 768px. |
+
+#### Overlay Text
+
+| Prop | Type | Description |
+|---|---|---|
+| `title` | `string` | Hero title text. |
+| `subtitle` | `string` | Subtitle below the title. |
+| `eyebrow` | `string` | Monospace badge above the title. |
+| `textFadeEnd` | `number` | Scroll progress at which title fades out. Default: `0.08`. |
+| `dialogues` | `Dialogue[]` | Timed subtitle/quote blocks. See below. |
+
+#### Loading & Progress
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `showLoadingProgress` | `boolean` | `true` | Top bar while frames preload. |
+| `loadingText` | `string` | `"Loading frames..."` | Text beside the loader. |
+| `showProgressBar` | `boolean` | `true` | Bottom scroll indicator. |
+
+#### Callbacks & Classes
+
+| Prop | Type | Description |
+|---|---|---|
+| `onProgress` | `(progress: number, frameIndex: number) => void` | Fires every scroll update. |
+| `className` | `string` | Class on the section wrapper. |
+| `canvasClassName` | `string` | Class on the `<canvas>` element. |
+| `overlayClassName` | `string` | Class on the overlay container. |
+
+### `Dialogue` Object
+
+```ts
+type Dialogue = {
+  id: string;        // Unique key
+  show: number;      // Progress value (0–1) to appear
+  hide: number;      // Progress value (0–1) to disappear
+  title?: string;    // Bold heading
+  text: string;      // Body copy
+  author?: string;   // Attribution line
+  source?: string;   // Source label (monospace style)
+};
+```
+
+---
+
+## Headless Hook
+
+For full control — build your own canvas, your own overlays, your own everything.
+
+```tsx
+import { useScrollFrames } from "scroll-cinematic";
+
+function MyCustomSequence() {
   const {
-    containerRef,    // Attach to parent wrapper section track container
-    canvasRef,       // Attach directly to custom target <canvas> element
-    loaded,          // Boolean status indicating complete memory asset buffering
-    loadProgress,    // Preload calculation percentage scalar value (0–1)
-    scrollProgress,  // Active real-time scroll tracking normalized progress (0–1)
-    frameIndex,      // Explicit numerical calculation tracking mapped frame array position
+    containerRef,    // → attach to the <section> scroll container
+    canvasRef,       // → attach to your <canvas>
+    loaded,          // boolean — all frames preloaded
+    loadProgress,    // 0–1 preload progress
+    scrollProgress,  // 0–1 scroll position
+    frameIndex,      // current frame number
   } = useScrollFrames({
     frames: "/frames/frame_%04d.webp",
     frameCount: 169,
@@ -119,34 +182,122 @@ function CustomSequenceLayout() {
 
   return (
     <section ref={containerRef} style={{ height: "400vh", position: "relative" }}>
-      <canvas ref={canvasRef} style={{ position: "sticky", top: 0, width: "100vw", height: "100vh" }} />
-      
-      <div className="custom-overlay-hud">
-        <p>Pipeline Status: {loaded ? "Ready" : `${Math.round(loadProgress * 100)}% Locked`}</p>
-        <p>Active Engine Delta: {Math.round(scrollProgress * 100)}%</p>
+      <canvas
+        ref={canvasRef}
+        style={{ position: "sticky", top: 0, width: "100%", height: "100vh" }}
+      />
+      <div className="my-overlay">
+        {Math.round(scrollProgress * 100)}% through
       </div>
     </section>
   );
 }
-◈ Preparing Your Asset PipelineTo optimize network delivery and processing, always compress source animations down into individual WebP file tracks. Your video.mp4
-       │
-       │  Step 1: Extract frames via FFmpeg at target uniform framerates
-       ▼
- ffmpeg -i video.mp4 -vf fps=30/1 frames/frame_%04d.jpg
-       │
-       │  Step 2: Compress sequences into WebP configurations (shaves ~65% off raw size)
-       ▼
- cwebp frames/*.jpg -folder frames_webp
-       │
-       │  Step 3: Move compiled outputs to your project structure public path
-       ▼
- public/frames/
-   ├── frame_0001.webp  (~30kb)
-   ├── frame_0002.webp  (~30kb)
-   └── frame_0169.webp  (~30kb)
-Calculation Rule of Thumb: Target roughly 1 frame asset per ~2px of configured scroll track depth height container space.A height="300vh" track container running on standard 1080p display environments spans roughly 3240px total vertical scrolling headroom — pairing nicely with a sequence configuration scaling around 160 total animation asset frames.◈ Performance ArchitectureZero-Mutation Core: Calculations write straight down to the immediate HTML5 Canvas 2D frame context interface — bypassing standard layout calculations, tree updates, and style recomputation overheads.Aggressive Lookahead Preloading: Video files are pre-parsed into indexed native in-memory Image() instance allocation arrays before drawing steps trigger.Viewport Isolation: Lifecycle tracking loops isolate state management updates utilizing standard IntersectionObserver targets, systematically unbinding active requestAnimationFrame tracking clocks whenever a scroll section leaves user sight lines.Cached Aspect-Fit Geometry Metrics: Math transform calculations measuring source image sizing vectors relative to viewport scaling constraints are locked during initial startup intervals and layout changes, keeping processing loops safe from frame-rendering overhead.◈ Real-World Use Cases📦 Product Deep-Dives: Break down hardware assemblies, mechanical components, or industrial layers interactively.🚀 High-Conversion Landers: Convert static product marketing copy structures into dynamic, continuous visual loops.🎨 Interactive Case Studies: Retain visitor engagement metrics by matching content reveal cadences directly to physical reading pace variables.◈ LicenseDistributed under the terms of the MIT License. See LICENSE for details. ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
- ▓                                               ▓
- ▓   scroll-cinematic · MIT · Zero Dependencies  ▓
- ▓     Built for a web that deserves better.     ▓
- ▓                                               ▓
- ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+```
+
+---
+
+## Prepare Your Frames
+
+```bash
+# Step 1 — extract frames at 30fps
+ffmpeg -i video.mp4 -vf fps=30/1 frames/frame_%04d.jpg
+
+# Step 2 — compress to WebP (cuts size 50–70%)
+cwebp frames/*.jpg -folder frames_webp
+
+# Step 3 — serve from /public/frames/
+```
+
+Your output:
+```
+frames/
+  frame_0001.webp  (~30kb)
+  frame_0002.webp  (~30kb)
+  ...
+  frame_0169.webp  (~30kb)
+```
+
+> **Rule of thumb:** 1 frame per ~2px of scroll height.  
+> `height="300vh"` at a 1080p display ≈ 3240px ≈ 162 frames at 30fps.
+
+---
+
+## Performance
+
+| What makes it fast |
+|---|
+| Canvas 2D — no DOM mutations on every frame |
+| All frames preloaded into `Image()` objects in memory |
+| RAF only runs when section is in viewport (IntersectionObserver) |
+| Cover-fit scaling computed once, not per-frame |
+| WebP frames ≈ 30–50kb each vs 80–150kb JPG |
+
+---
+
+## SSR / Next.js
+
+Works out of the box. `useScrollFrames` guards all `window`/`document` access behind mount checks. Drop it into any App Router page:
+
+```tsx
+// app/page.tsx — works as-is
+import { ScrollSequence } from "scroll-cinematic";
+
+export default function Page() {
+  return <ScrollSequence frames="..." frameCount={169} />;
+}
+```
+
+---
+
+## Architecture
+
+```
+scroll-cinematic/
+│
+├─ <ScrollSequence />          ← Drop-in component. You probably want this.
+│     │
+│     ├─ useScrollFrames()     ← The engine. Handles everything below.
+│     │     │
+│     │     ├─ Preloader       ← Fetches all N frames in parallel, fires onProgress
+│     │     ├─ IntersectionObs ← Starts/stops RAF only when visible
+│     │     ├─ ScrollTracker   ← Maps scrollY → progress (0–1)
+│     │     └─ Canvas Renderer ← drawImage() with cover-fit scaling + mobile zoom
+│     │
+│     └─ Overlay Layer         ← Title, subtitle, eyebrow, Dialogue[] timed blocks
+│
+└─ useScrollFrames()           ← Headless hook for custom layouts
+```
+
+### Repo layout
+
+```
+scroll-cinematic/
+├── src/
+│   ├── ScrollSequence.tsx       ← Main component
+│   ├── useScrollFrames.ts       ← Core hook
+│   └── preloader.ts             ← Frame preloading logic
+├── dist/                        ← Built ESM + CJS output
+└── template-cinematic-website/  ← Full demo: Next.js + Tailwind + Framer Motion + Lenis
+```
+
+```bash
+npm run build   # → dist/
+npm run dev     # → watch mode
+```
+
+---
+
+## Use Cases
+
+- **Product reveals** — show a physical product rotating or assembling as the user scrolls
+- **Startup landing pages** — turn your hero section into a moment people remember
+- **Agency & studio portfolios** — demonstrate craft before the client reads a word
+- **Film & media sites** — let trailers breathe through a scene frame by frame
+- **Interactive storytelling** — pair dialogues with action beats to build narrative
+- **Brand campaigns** — the format that used to require a full production team
+
+---
+
+## License
+
+MIT © 2026
