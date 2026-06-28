@@ -38,6 +38,9 @@
 
 ---
 
+> [!NOTE]
+> **v1.1.2 Update:** This release introduces major performance and visual enhancements to `scroll-cinematic`. It features a new **progressive LOD (Level of Detail) preloader** that loads keyframes first for a 4x faster page-load time, letting users scroll immediately while detail frames buffer in the background. Additionally, we’ve added **butter-smooth frame interpolation (lerp-easing)** to eliminate visual stutter during rapid scrolls, a **DPR cap of 2.0** to prevent GPU memory bloat on Retina/4K screens, and scroll-time layout caching to completely eliminate layout thrashing.
+
 <br/>
 
 ## ◈ What Is This

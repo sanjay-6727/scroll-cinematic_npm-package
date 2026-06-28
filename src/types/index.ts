@@ -14,6 +14,7 @@ export interface UseScrollFramesOptions {
   frames: string | ((index: number) => string);
   frameCount: number;
   mobileZoom?: number;
+  easingSpeed?: number; // Easing factor between 0 and 1 (1 = no easing). Default: 0.15
   onProgress?: (progress: number, frameIndex: number) => void;
 }
 

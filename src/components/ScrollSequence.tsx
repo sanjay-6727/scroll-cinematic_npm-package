@@ -75,6 +75,10 @@ export interface ScrollSequenceProps {
     | ReactNode
     | ((progress: number, frameIndex: number, loaded: boolean) => ReactNode);
   /**
+   * Easing factor between 0 and 1 (1 = no easing). Default: 0.15
+   */
+  easingSpeed?: number;
+  /**
    * Callback fired on scroll progress updates
    */
   onProgress?: (progress: number, frameIndex: number) => void;
@@ -97,6 +101,7 @@ export function ScrollSequence({
   canvasClassName = "",
   overlayClassName = "",
   stickyCanvas = true,
+  easingSpeed = 0.15,
   children,
   onProgress,
 }: ScrollSequenceProps) {
@@ -111,6 +116,7 @@ export function ScrollSequence({
     frames,
     frameCount,
     mobileZoom,
+    easingSpeed,
     onProgress,
   });
 
@@ -260,9 +266,11 @@ export function ScrollSequence({
       <div style={overlayStyle} className={overlayClassName}>
         {/* Top bar (loading status) */}
         <div>
-          {!loaded && showLoadingProgress && (
+          {loadProgress < 1 && showLoadingProgress && (
             <div style={loaderContainerStyle}>
-              <span style={loaderTextStyle}>{loadingText}</span>
+              <span style={loaderTextStyle}>
+                {!loaded ? loadingText : "Buffering detail..."}
+              </span>
               <div style={loaderBarBgStyle}>
                 <div style={loaderBarStyle} />
               </div>
