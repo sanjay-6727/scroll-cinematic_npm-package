@@ -139,7 +139,7 @@ export function ScrollSequence({
 
   const canvasStyle: React.CSSProperties = {
     display: "block",
-    touchAction: "none",
+    pointerEvents: "none", // Allow swipes and touches to pass through the canvas
     zIndex: 0,
     ...(stickyCanvas
       ? { position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }
